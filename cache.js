@@ -50,7 +50,6 @@ function Cache(config) {
             this.initCache
         };
     
-        // Periodical cleanup
         setInterval(this.refresh, config['refresh'] * 1000);
 
     }
