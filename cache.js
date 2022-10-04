@@ -30,12 +30,19 @@ function Cache(config) {
             return self.has(key) ? data[key].value : def;
         };
 
-        this.initCache = function (filePath) {
+        this.restoreCache = function (filePath) {
             var fileIn = fs.readFileSync(filePath).toString().split("\n");
             for(i in fileIn) {
                 console.log(fileIn[i]);
                 var line = fileIn[i].split("|")
                 this.set(line[0], line[1])
+            }
+        }
+
+        this.saveCacheToFile = function (filePath) {
+            for(var key in data) {
+                var value = this.get(key)
+                fs.appendFileSync(filePath, `${key}|${value}\n`);
             }
         }
 
@@ -47,7 +54,7 @@ function Cache(config) {
         
         this.refresh = function() {
             this.clear;
-            this.initCache
+            this.restoreCache
         };
     
         setInterval(this.refresh, config['refresh'] * 1000);
